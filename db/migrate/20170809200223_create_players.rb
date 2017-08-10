@@ -5,6 +5,8 @@ class CreatePlayers < ActiveRecord::Migration[5.1]
       t.string :nationality
       t.string :club_name
       t.references :club, foreign_key: true
+      t.string :squad_name
+      t.references :squad, foreign_key: true
       t.string :club_position
       t.integer :club_kit
       t.integer :rating

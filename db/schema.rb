@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170809200223) do
+ActiveRecord::Schema.define(version: 20170810001405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,11 +21,22 @@ ActiveRecord::Schema.define(version: 20170809200223) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "player_squads", force: :cascade do |t|
+    t.bigint "player_id"
+    t.bigint "squad_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_player_squads_on_player_id"
+    t.index ["squad_id"], name: "index_player_squads_on_squad_id"
+  end
+
   create_table "players", force: :cascade do |t|
     t.string "name"
     t.string "nationality"
     t.string "club_name"
     t.bigint "club_id"
+    t.string "squad_name"
+    t.bigint "squad_id"
     t.string "club_position"
     t.integer "club_kit"
     t.integer "rating"
@@ -74,13 +85,25 @@ ActiveRecord::Schema.define(version: 20170809200223) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["club_id"], name: "index_players_on_club_id"
+    t.index ["squad_id"], name: "index_players_on_squad_id"
   end
 
   create_table "squads", force: :cascade do |t|
     t.string "name"
     t.string "league_format"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_squads_on_user_id"
+  end
+
+  create_table "user_clubs", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "club_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["club_id"], name: "index_user_clubs_on_club_id"
+    t.index ["user_id"], name: "index_user_clubs_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -91,5 +114,11 @@ ActiveRecord::Schema.define(version: 20170809200223) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "player_squads", "players"
+  add_foreign_key "player_squads", "squads"
   add_foreign_key "players", "clubs"
+  add_foreign_key "players", "squads"
+  add_foreign_key "squads", "users"
+  add_foreign_key "user_clubs", "clubs"
+  add_foreign_key "user_clubs", "users"
 end
