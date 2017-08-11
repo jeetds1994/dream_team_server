@@ -130,18 +130,27 @@ end
 #     response = HTTParty.get(club.badge)
 #     parse_page = Nokogiri::HTML(response)
 #     test1 = parse_page.css('body > center:nth-child(1) > h1')
-#     if !test1.empty?
-#       if test1[0].children[0].text === "404 Not Found"
-#         club.badge = '404'
-#         club.save
-#       end
-#     end
+    # if test1.empty?
+    #   club.save
+    # else
+    #   if test1[0].children[0].text != "404 Not Found"
+    #     club.save
+    #   end
+    # end
 #   end
 # end
 
 #############################################################################
+# The following method for Club#index will change all 404 images to a default badge
+# clubs = Club.where("badge = '404'")
+# clubs.map do |club|
+#   club.badge = "http://surepredictions.com/public/img/flag/default.jpg"
+#   club.save
+# end
+
+#############################################################################
 # The following method for Club#index will check all '404' images for better 256px images. If they exist, it will update DB entry
-# Club.where("badge === '404'").map do |club|
+# Club.where("badge = '404'").map do |club|
 #   badge = club.badge.split('/')
 #   badge[-3] = 256
 #   badge = badge.join('/')
