@@ -3,8 +3,8 @@
 
 class Api::V1::ClubsController < ApplicationController
   def index
-    # render json: Club.all
-    paginate json: Club.all.order(:id), per_page: 25
+    render json: Club.all
+    # paginate json: Club.all.order(:id), per_page: 50
   end
 
   def show
