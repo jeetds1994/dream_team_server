@@ -22,6 +22,9 @@ gem 'active_model_serializers'
 gem 'will_paginate'
 gem 'api-pagination'
 
+gem 'httparty'
+gem 'nokogiri'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
