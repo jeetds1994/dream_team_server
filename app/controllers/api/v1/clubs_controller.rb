@@ -3,8 +3,8 @@
 
 class Api::V1::ClubsController < ApplicationController
   def index
-    render json: Club.all.order(:name)
-    # paginate json: Club.all.order(:name), per_page: 250
+    # render json: Club.all.order(:name)
+    paginate json: Club.all.order(:name), per_page: 25
   end
 
   def show
@@ -83,6 +83,8 @@ end
 # end
 
 #############################################################################
+#############################################################################
+#############################################################################
 # The function below was for the Club#index to scrape for ALL clubs for the 50px badge
 # Since all clubs now have a badge, I removed from controller action
 #
@@ -123,6 +125,8 @@ end
 #     end
 #   end
 
+#############################################################################
+#############################################################################
 #############################################################################
 # The following method for Club#index will change all 50px images that led to 404 pages to change DB value to '404'
 # Club.all.map do |club|
