@@ -1,5 +1,5 @@
-# require 'httparty'
-# require 'nokogiri'
+require 'httparty'
+require 'nokogiri'
 
 class Api::V1::ClubsController < ApplicationController
   def index
@@ -38,6 +38,7 @@ class Api::V1::ClubsController < ApplicationController
           club.save
         end
       end
+    end
   end
 
   def show
