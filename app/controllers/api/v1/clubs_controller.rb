@@ -42,7 +42,29 @@ class Api::V1::ClubsController < ApplicationController
   end
 
   def show
-    render json: Club.find(params[:id])
+    club = Club.find(params[:id])
+    render json: club
+    # render json: Club.find(params[:id])
+
+    name = I18n.transliterate(club.name).split(' ')
+    name1 = name[-2]
+    name2 = name[-1]
+
+    if name1
+      response = HTTParty.get("https://www.fifaindex.com/teams/?name=#{name1}+#{name2}")
+      parse_page = Nokogiri::HTML(response)
+      img = parse_page.css('#no-more-tables > table > tbody > tr > td:nth-child(1) > a > img')
+      img_url = img[0].attributes["src"].value
+      club.badge = "https://www.fifaindex.com#{img_url}"
+      club.save
+    else
+      response = HTTParty.get("https://www.fifaindex.com/teams/?name=#{name2}")
+      parse_page = Nokogiri::HTML(response)
+      img = parse_page.css('#no-more-tables > table > tbody > tr > td:nth-child(1) > a > img')
+      img_url = img[0].attributes["src"].value
+      club.badge = "https://www.fifaindex.com#{img_url}"
+      club.save
+    end
   end
 end
 
