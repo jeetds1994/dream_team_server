@@ -60,18 +60,17 @@ class Api::V1::ClubsController < ApplicationController
       end
     end
 
-
-    response = HTTParty.get(club.badge)
-    parse_page = Nokogiri::HTML(response)
-    test1 = parse_page.css('body > center:nth-child(1) > h1')
-    if test1.empty?
-      return
-    else
-      if test1[0].children[0].text === "404 Not Found"
-        club.badge = "http://surepredictions.com/public/img/flag/default.jpg"
-        club.save
-      end
-    end
+    # response = HTTParty.get(club.badge)
+    # parse_page = Nokogiri::HTML(response)
+    # test1 = parse_page.css('body > center:nth-child(1) > h1')
+    # if test1.empty?
+    #   return
+    # else
+    #   if test1[0].children[0].text === "404 Not Found"
+    #     club.badge = "http://surepredictions.com/public/img/flag/default.jpg"
+    #     club.save
+    #   end
+    # end
 
   end
 end
