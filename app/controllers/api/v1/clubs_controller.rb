@@ -6,6 +6,7 @@ class Api::V1::ClubsController < ApplicationController
     # render json: Club.all.order(:name)
     paginate json: Club.all.order(:name), per_page: 50
 
+    clubs = Club.all
     clubs.map do |club|
 
       if club.badge
