@@ -10,14 +10,6 @@ class Api::V1::ClubsController < ApplicationController
     clubs.map do |club|
 
       if !club.badge
-      #   if club.badge.split('/')[-3].to_i != 50
-      #     badge = club.badge.split('/')
-      #     badge[-3] = 50
-      #     badge = badge.join('/')
-      #     club.badge = badge
-      #     club.save
-      #   end
-      # else
         name = I18n.transliterate(club.name).split(' ')
         name1 = name[-2]
         name2 = name[-1]
@@ -46,31 +38,40 @@ class Api::V1::ClubsController < ApplicationController
     render json: club
     # render json: Club.find(params[:id])
 
-    name = I18n.transliterate(club.name).split(' ')
-    name1 = name[-2]
-    name2 = name[-1]
+    if !club.badge || club.badge === "http://surepredictions.com/public/img/flag/default.jpg"
+      name = I18n.transliterate(club.name).split(' ')
+      name1 = name[-2]
+      name2 = name[-1]
 
-    if name1
-      response = HTTParty.get("https://www.fifaindex.com/teams/?name=#{name1}+#{name2}")
-      parse_page = Nokogiri::HTML(response)
-      img = parse_page.css('#no-more-tables > table > tbody > tr > td:nth-child(1) > a > img')
-      img_url = img[0].attributes["src"].value
-      club.badge = "https://www.fifaindex.com#{img_url}"
-      club.save
-    else
-      response = HTTParty.get("https://www.fifaindex.com/teams/?name=#{name2}")
-      parse_page = Nokogiri::HTML(response)
-      img = parse_page.css('#no-more-tables > table > tbody > tr > td:nth-child(1) > a > img')
-      img_url = img[0].attributes["src"].value
-      club.badge = "https://www.fifaindex.com#{img_url}"
-      club.save
+      if name1
+        response = HTTParty.get("https://www.fifaindex.com/teams/?name=#{name1}+#{name2}")
+        parse_page = Nokogiri::HTML(response)
+        img = parse_page.css('#no-more-tables > table > tbody > tr > td:nth-child(1) > a > img')
+        img_url = img[0].attributes["src"].value
+        club.badge = "https://www.fifaindex.com#{img_url}"
+        club.save
+      else
+        response = HTTParty.get("https://www.fifaindex.com/teams/?name=#{name2}")
+        parse_page = Nokogiri::HTML(response)
+        img = parse_page.css('#no-more-tables > table > tbody > tr > td:nth-child(1) > a > img')
+        img_url = img[0].attributes["src"].value
+        club.badge = "https://www.fifaindex.com#{img_url}"
+        club.save
+      end
     end
 
 
-    club.badge = "http://surepredictions.com/public/img/flag/default.jpg"
-    club.save
-
-
+    response = HTTParty.get(club.badge)
+    parse_page = Nokogiri::HTML(response)
+    test1 = parse_page.css('body > center:nth-child(1) > h1')
+    if test1.empty?
+      return
+    else
+      if test1[0].children[0].text === "404 Not Found"
+        club.badge = "http://surepredictions.com/public/img/flag/default.jpg"
+        club.save
+      end
+    end
 
   end
 end
