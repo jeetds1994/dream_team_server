@@ -4,7 +4,7 @@ require 'nokogiri'
 class Api::V1::ClubsController < ApplicationController
   def index
     # render json: Club.all.order(:name)
-    paginate json: Club.all.order(:name), per_page: 200
+    paginate json: Club.all.order(:name), per_page: 100
   end
 
   def show
