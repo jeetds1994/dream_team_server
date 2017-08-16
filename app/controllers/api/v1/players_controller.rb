@@ -1,7 +1,7 @@
 class Api::V1::PlayersController < ApplicationController
   def index
     # render json: Player.all
-    paginate json: Player.all, per_page: 25
+    paginate json: Player.all, per_page: 50
   end
 
   def show
