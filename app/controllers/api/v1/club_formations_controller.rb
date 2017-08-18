@@ -4,6 +4,7 @@ class Api::V1::ClubFormationsController < ApplicationController
   end
 
   def create
+    byebug
     current_club_formation = ClubFormation.find_by(club_id: club_formation_params["club_id"], formation_id: club_formation_params["formation_id"])
     if current_club_formation
       current_club_formation.update(club_formation_params)
