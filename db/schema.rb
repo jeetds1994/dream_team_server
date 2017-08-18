@@ -10,16 +10,59 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170810235213) do
+ActiveRecord::Schema.define(version: 20170818013100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "club_formations", force: :cascade do |t|
+    t.bigint "club_id"
+    t.bigint "formation_id"
+    t.boolean "current_club_formation"
+    t.boolean "default_club_formation"
+    t.integer "player_1"
+    t.integer "player_2"
+    t.integer "player_3"
+    t.integer "player_4"
+    t.integer "player_5"
+    t.integer "player_6"
+    t.integer "player_7"
+    t.integer "player_8"
+    t.integer "player_9"
+    t.integer "player_10"
+    t.integer "player_11"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["club_id"], name: "index_club_formations_on_club_id"
+    t.index ["formation_id"], name: "index_club_formations_on_formation_id"
+  end
 
   create_table "clubs", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "badge"
+  end
+
+  create_table "formations", force: :cascade do |t|
+    t.string "format"
+    t.integer "goalkeepers"
+    t.integer "defenders"
+    t.integer "midfielders"
+    t.integer "forwards"
+    t.string "position_1"
+    t.string "position_2"
+    t.string "position_3"
+    t.string "position_4"
+    t.string "position_5"
+    t.string "position_6"
+    t.string "position_7"
+    t.string "position_8"
+    t.string "position_9"
+    t.string "position_10"
+    t.string "position_11"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "player_squads", force: :cascade do |t|
@@ -116,6 +159,8 @@ ActiveRecord::Schema.define(version: 20170810235213) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "club_formations", "clubs"
+  add_foreign_key "club_formations", "formations"
   add_foreign_key "player_squads", "players"
   add_foreign_key "player_squads", "squads"
   add_foreign_key "players", "clubs"
