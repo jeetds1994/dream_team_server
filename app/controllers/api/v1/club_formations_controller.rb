@@ -7,17 +7,14 @@ class Api::V1::ClubFormationsController < ApplicationController
     current_club_formation = ClubFormation.find_by(club_id: club_formation_params["club_id"], formation_id: club_formation_params["formation_id"])
 
     if current_club_formation
-      # current_club_formation.update(club_formation_params)
-      render json: {current_club_formation, message: 'Found your lineup!', status: 201}
+      current_club_formation.update(club_formation_params)
+      return render json: current_club_formation
     end
 
     if !current_club_formation
       club_formation = ClubFormation.create(club_formation_params)
-      render json: {club_formation, message: 'Saved your lineup!', status: 200}
+      return render json: club_formation
     end
-    puts club_formation_params
-
-    render json: {message: 'Error when trying to create ClubFormation!', status: 400}
   end
 
   private
