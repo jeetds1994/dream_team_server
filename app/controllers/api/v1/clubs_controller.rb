@@ -42,7 +42,7 @@ class Api::V1::ClubsController < ApplicationController
       return
     else
       if test1[0].children[0].text === "404 Not Found"
-        club.badge = "http://surepredictions.com/public/img/flag/default.jpg"
+        club.badge = "https://i.pinimg.com/originals/d0/db/0f/d0db0faf8e3505ad5e077fe0f9002baf.jpg"
         club.save
       end
     end
